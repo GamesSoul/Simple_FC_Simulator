@@ -1,0 +1,705 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   WebFC Emulator - Custom Design System
+   Aesthetic: Retro Arcade / CRT Terminal
+   ============================================ */
+
+:root {
+  --color-arcade-black: #1a1a1a;
+  --color-arcade-dark: #2d2d2d;
+  --color-arcade-panel: #1f2937;
+  --color-arcade-surface: #374151;
+  --color-arcade-border: #4b5563;
+  --color-arcade-muted: #9ca3af;
+  --color-arcade-text: #e0e0e0;
+  --color-arcade-bright: #ffffff;
+  --color-neon-red: #ef4444;
+  --color-neon-red-dim: #dc2626;
+  --color-neon-green: #10b981;
+  --color-neon-green-dim: #059669;
+  --color-neon-blue: #3b82f6;
+  --color-neon-yellow: #f59e0b;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-orange: #f97316;
+  --font-pixel: 'Press Start 2P', cursive;
+  --font-body: 'Roboto', sans-serif;
+}
+
+/* Base */
+body {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.pixel-font {
+  font-family: 'Press Start 2P', cursive;
+}
+
+
+
+/* ============================================
+   CRT Display - Authentic Television Look
+   ============================================ */
+.crt-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 4/3;
+  background-color: #000;
+  border-radius: 20px;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  margin: 0 auto;
+  border: 2px solid #333;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* CRT Overlay Effects */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Scanlines */
+.scanlines {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.2)
+  );
+  background-size: 100% 4px;
+  animation: scrollScanlines 10s linear infinite;
+}
+
+@keyframes scrollScanlines {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+/* Vignette & Screen Curvature simulation */
+.vignette {
+  background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 90%, rgba(0,0,0,0.9) 100%);
+}
+
+/* RGB Color Shift Effect */
+.rgb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 11;
+}
+
+/* RGB 色差效果增强 */
+.rgb::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,0,0,0.03);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.rgb::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,255,0.03);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Noise/Grain Effect */
+.flicker {
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.1"/></svg>');
+  background-size: 200px 200px;
+  pointer-events: none;
+}
+
+/* Distortion Effect */
+.distortion {
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.05) 50%, transparent 100%);
+  background-size: 100% 2px;
+  animation: distortion 0.3s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes distortion {
+  0% { transform: scale(1) skew(0deg); }
+  50% { transform: scale(1.005) skew(0.5deg); }
+  100% { transform: scale(1) skew(-0.5deg); }
+}
+
+/* Blur Effect */
+.blur {
+  /* 移除复杂的模糊效果，使用简单的轻微模糊 */
+  backdrop-filter: blur(0.1px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ============================================
+   Retro Buttons - Arcade Cabinet Feel
+   ============================================ */
+.btn-retro {
+  background: #2d2d2d;
+  border: 2px solid #555;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.1s;
+  box-shadow: 0 4px 0 #111;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-retro:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #111;
+}
+
+.btn-retro:hover {
+  background: #3d3d3d;
+  color: #fff;
+  border-color: #777;
+}
+
+.btn-primary {
+  background: #b91c1c;
+  border-color: #991b1b;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #dc2626;
+}
+
+/* ============================================
+   Modal - Frosted Glass Dark
+   ============================================ */
+.modal-backdrop {
+  background-color: rgba(0,0,0,0.85);
+  backdrop-filter: blur(5px);
+}
+
+/* ============================================
+   Range Sliders - Neon Accent
+   ============================================ */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  margin-top: -6px;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  background: #4b5563;
+  border-radius: 2px;
+}
+
+input[type=range]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 4px;
+  background: #4b5563;
+  border-radius: 2px;
+}
+
+/* ============================================
+   Toast Notifications
+   ============================================ */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-left: 4px solid #ef4444;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  animation: toastSlideIn 0.3s ease-out;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.toast.toast-exit {
+  animation: toastSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toastSlideOut {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(120%); opacity: 0; }
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: var(--color-arcade-dark);
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-arcade-border);
+  border-radius: 3px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-arcade-muted);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 4px rgba(0, 255, 136, 0.3); }
+  50% { box-shadow: 0 0 12px rgba(0, 255, 136, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-float-in {
+  animation: float-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================
+   Settings Tab Indicator
+   ============================================ */
+.settings-tab-active {
+  background: linear-gradient(90deg, rgba(255, 45, 85, 0.1), transparent);
+  border-left: 4px solid var(--color-neon-red);
+  color: var(--color-arcade-bright);
+}
+
+.settings-tab-inactive {
+  border-left: 4px solid transparent;
+  color: var(--color-arcade-muted);
+}
+
+.settings-tab-inactive:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-arcade-text);
+}
+
+/* ============================================
+   Key Mapping Button
+   ============================================ */
+.key-btn {
+  background: var(--color-arcade-dark);
+  border: 1px solid var(--color-arcade-border);
+  color: var(--color-neon-green);
+  transition: all 0.2s;
+}
+
+.key-btn:hover {
+  border-color: var(--color-neon-green);
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
+}
+
+.key-btn.listening {
+  border-color: var(--color-neon-yellow);
+  color: var(--color-neon-yellow);
+  animation: pulse-glow 1s ease-in-out infinite;
+}
+
+/* ============================================
+   Player Tab Buttons
+   ============================================ */
+.player-tab {
+  transition: all 0.2s;
+}
+
+.player-tab-active {
+  background: var(--color-neon-red);
+  color: white;
+  box-shadow: 0 0 12px rgba(255, 45, 85, 0.3);
+}
+
+.player-tab-inactive {
+  background: var(--color-arcade-surface);
+  color: var(--color-arcade-muted);
+}
+
+.player-tab-inactive:hover {
+  background: var(--color-arcade-border);
+  color: var(--color-arcade-text);
+}
+
+/* ============================================
+   Toggle Switch
+   ============================================ */
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--color-arcade-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-switch.active {
+  background: var(--color-neon-red);
+  box-shadow: 0 0 8px rgba(255, 45, 85, 0.4);
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toggle-switch.active::after {
+  transform: translateX(20px);
+}
+
+/* ============================================
+   Power LED Indicator
+   ============================================ */
+.power-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-neon-red);
+  box-shadow: 0 0 6px var(--color-neon-red);
+  animation: led-pulse 2s ease-in-out infinite;
+}
+
+.power-led.off {
+  background: #333;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* ============================================
+   Status Bar
+   ============================================ */
+.status-bar {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px currentColor;
+}
+
+/* ============================================
+   FC Controller Layout
+   ============================================ */
+.fc-controller-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+  border-radius: 12px;
+  border: 2px solid #4b5563;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Directional Pad */
+.dpad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.dpad-row {
+  display: flex;
+  gap: 8px;
+}
+
+.dpad-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #374151, #1f2937);
+  border: 3px solid #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 0 #111;
+}
+
+.dpad-btn:hover {
+  background: linear-gradient(145deg, #4b5563, #374151);
+  border-color: #6b7280;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #111;
+}
+
+.dpad-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #111;
+}
+
+.dpad-btn.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+  border-color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+.dpad-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #10b981;
+  font-family: var(--font-pixel);
+  text-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
+}
+
+/* Center Buttons (Select and Start) */
+.center-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.center-btn {
+  width: 80px;
+  height: 30px;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #374151, #1f2937);
+  border: 2px solid #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 0 #111;
+}
+
+.center-btn:hover {
+  background: linear-gradient(145deg, #4b5563, #374151);
+  border-color: #6b7280;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 #111;
+}
+
+.center-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 #111;
+}
+
+.center-btn.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+  border-color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+/* Action Buttons (A, B, A Turbo, B Turbo) */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.action-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 0 #111;
+  font-family: var(--font-pixel);
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #111;
+}
+
+.action-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #111;
+}
+
+.action-btn.animate-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+/* A Button */
+.a-btn {
+  background: linear-gradient(145deg, #10b981, #059669);
+  border: 3px solid #059669;
+  color: white;
+}
+
+.a-btn:hover {
+  background: linear-gradient(145deg, #059669, #047857);
+  border-color: #047857;
+}
+
+/* B Button */
+.b-btn {
+  background: linear-gradient(145deg, #ef4444, #dc2626);
+  border: 3px solid #dc2626;
+  color: white;
+}
+
+.b-btn:hover {
+  background: linear-gradient(145deg, #dc2626, #b91c1c);
+  border-color: #b91c1c;
+}
+
+/* A Turbo Button */
+.a-turbo-btn {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  border: 3px solid #2563eb;
+  color: white;
+}
+
+.a-turbo-btn:hover {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  border-color: #1d4ed8;
+}
+
+/* B Turbo Button */
+.b-turbo-btn {
+  background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+  border: 3px solid #7c3aed;
+  color: white;
+}
+
+.b-turbo-btn:hover {
+  background: linear-gradient(145deg, #7c3aed, #6d28d9);
+  border-color: #6d28d9;
+}
+
+.btn-label {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .fc-controller-layout {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .dpad-btn,
+  .action-btn {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .center-btn {
+    width: 70px;
+    height: 25px;
+  }
+  
+  .dpad-label,
+  .btn-label {
+    font-size: 10px;
+  }
+}
