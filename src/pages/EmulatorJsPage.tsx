@@ -1,6 +1,6 @@
 import { useRef, useCallback, useEffect, useState } from 'react';
 import { EmulatorProvider, useEmulator, useEmulatorAction } from '../context/EmulatorContext';
-import { NES, Browser, Controller } from 'jsnes';
+import { Browser, Controller } from 'jsnes';
 import Header from '../components/Header';
 import StatusBar from '../components/StatusBar';
 import ControlBar from '../components/ControlBar';

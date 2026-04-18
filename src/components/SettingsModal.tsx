@@ -1,84 +1,6 @@
 import { memo, useState, useEffect, useCallback } from 'react';
-import { useEmulator, useEmulatorAction, BUTTON_LABELS, BUTTON_DISPLAY_NAMES } from '../context/EmulatorContext';
+import { useEmulator, useEmulatorAction } from '../context/EmulatorContext';
 import { GamepadInfo } from '../types';
-import { Controller } from 'jsnes';
-
-// 将键盘 code 转换为 keyCode 的函数
-const codeToKeyCode = (code: string): number => {
-  // 字母键 (KeyA -> 65)
-  if (code.startsWith('Key')) {
-    return code.charCodeAt(3);
-  }
-  // 方向键
-  if (code.startsWith('Arrow')) {
-    const arrowMap: Record<string, number> = {
-      'ArrowUp': 38,
-      'ArrowDown': 40,
-      'ArrowLeft': 37,
-      'ArrowRight': 39,
-    };
-    return arrowMap[code];
-  }
-  // 数字键 (Digit0 -> 48)
-  if (code.startsWith('Digit')) {
-    return 48 + parseInt(code.charAt(5));
-  }
-  // 功能键
-  const keyMap: Record<string, number> = {
-    'Enter': 13,
-    'Space': 32,
-    'ShiftLeft': 16,
-    'ShiftRight': 16,
-    'ControlLeft': 17,
-    'ControlRight': 17,
-    'AltLeft': 18,
-    'AltRight': 18,
-    'Tab': 9,
-    'Escape': 27,
-    'Backspace': 8,
-    'CapsLock': 20,
-    'NumLock': 144,
-    'ScrollLock': 145,
-    'Pause': 19,
-    'Insert': 45,
-    'Delete': 46,
-    'Home': 36,
-    'End': 35,
-    'PageUp': 33,
-    'PageDown': 34,
-    'PrintScreen': 44,
-    // 小键盘
-    'Numpad0': 96,
-    'Numpad1': 97,
-    'Numpad2': 98,
-    'Numpad3': 99,
-    'Numpad4': 100,
-    'Numpad5': 101,
-    'Numpad6': 102,
-    'Numpad7': 103,
-    'Numpad8': 104,
-    'Numpad9': 105,
-    'NumpadAdd': 107,
-    'NumpadSubtract': 109,
-    'NumpadMultiply': 106,
-    'NumpadDivide': 111,
-    'NumpadDecimal': 110,
-    'NumpadEnter': 108,
-    // 标点符号
-    'Semicolon': 186,
-    'Equal': 187,
-    'Comma': 188,
-    'Minus': 189,
-    'Period': 190,
-    'Slash': 191,
-    'Backquote': 192,
-    'BracketLeft': 219,
-    'Backslash': 220,
-    'BracketRight': 221,
-    'Quote': 222,
-  };
-  return keyMap[code] || code.charCodeAt(0);
-};
 
 /**
  * Key mapping panel for a single player.
@@ -89,7 +11,7 @@ interface KeyMappingPanelProps {
   keyboardController?: any;
 }
 
-function KeyMappingPanel({ player, startKeyCapture, keyboardController }: KeyMappingPanelProps) {
+function KeyMappingPanel({ player, startKeyCapture }: KeyMappingPanelProps) {
   const { state } = useEmulator();
   const { setMapping } = useEmulatorAction();
   const [listeningKey, setListeningKey] = useState<string | null>(null);
@@ -358,7 +280,7 @@ function CRTTab() {
           <label className="text-gray-300 font-bold">{effect.label}</label>
           <input
             type="checkbox"
-            checked={state.crt[effect.key as keyof typeof state.crt]}
+            checked={Boolean(state.crt[effect.key as keyof typeof state.crt])}
             onChange={(e) => setCrt({ [effect.key]: e.target.checked })}
             className="w-5 h-5 accent-red-500"
           />
