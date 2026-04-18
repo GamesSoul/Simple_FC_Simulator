@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+# 🔥 核心修复：开启写权限
+permissions:
+  contents: write
+  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
