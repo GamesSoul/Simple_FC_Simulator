@@ -8,7 +8,6 @@ on:
     branches:
       - main
 
-# 🔥 核心修复：开启写权限
 permissions:
   contents: write
   
@@ -18,10 +17,10 @@ jobs:
     
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -32,9 +31,16 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify dist directory
+        run: |
+          echo "=== dist contents ===" && ls -la dist/
+          echo "=== dist/assets contents ===" && ls -la dist/assets/
+          echo "=== index.html ===" && cat dist/index.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
+          force_orphan: true
